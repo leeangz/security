@@ -14,13 +14,12 @@ import lombok.extern.log4j.Log4j2;
 @Configuration
 @Log4j2
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	//LoginSuccessHandler 등록
-    @Bean
-    public ThehyundaiLoginSuccessHandler successHandler(){
-        return new ThehyundaiLoginSuccessHandler(passwordEncoder());
-    }//end CLu..   
 
+	// LoginSuccessHandler 등록
+	@Bean
+	public ThehyundaiLoginSuccessHandler successHandler() {
+		return new ThehyundaiLoginSuccessHandler(passwordEncoder());
+	}// end CLu..
 
 	@Bean
 	public RoleHierarchyImpl roleHierarchyImpl() {
@@ -47,7 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		// /samle/all 모든 사용자 가능
 		// /sample/member USER 롤 사용자만
-		http.authorizeRequests().antMatchers("/samle/all").permitAll().antMatchers("/sample/member").hasRole("USER");
+		/*
+		 * http.authorizeRequests().antMatchers("/samle/all").permitAll().antMatchers(
+		 * "/sample/member").hasRole("USER");
+		 */
 
 		// 인가 인증 문제시 로그인 화면
 		http.formLogin();
@@ -55,9 +57,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.csrf().disable();
 		// 로그 아웃 세팅
 		http.logout();
-		
 		// 구글 oauth 인증 추가
 		http.oauth2Login().successHandler(successHandler());
+		// 일반 from 로그인 rememberMe 설정
+		http.rememberMe() // 7day
+				.tokenValiditySeconds(60 * 60 * 24 * 7).userDetailsService(userDetailsService());
 
 	}// end configure http
 

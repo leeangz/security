@@ -32,8 +32,17 @@ public class ThehyundaiDetailsService implements UserDetailsService {
 			log.info(username);
 			result = MemberRepository.findByEmail(username, 0);
 		} catch (SQLException e) {
-			throw new UsernameNotFoundException("Check Email or Social!!");
+			log.info(e.getMessage());
 		} // end try
+
+		if (result == null) {
+			try {
+				result = MemberRepository.findByEmail(username, 1);
+			} catch (SQLException e1) {
+				throw new UsernameNotFoundException("Check Email or Social!!");
+			} // end try
+
+		} // end if
 
 		// clubMember 생성
 		ThehyundaiMember2 Member2 = result;
@@ -50,6 +59,7 @@ public class ThehyundaiDetailsService implements UserDetailsService {
 		// ClubAuthMemberDTO 값 세팅
 		DTO.setName(Member2.getName());
 		DTO.setFromSocial(Member2.getFrom_social());
+		DTO.setPassword(Member2.getPassword());
 
 		log.info(DTO);
 		log.info(DTO.getAuthorities().toString());
