@@ -6,7 +6,7 @@ before project, about security/auth
 # spring boot security
 
 # file hierarchy
-...
+```
 src/main/java
 ㄴ org.project.thehyundai
 ㄴ org.project.thehyundai.config
@@ -18,5 +18,5 @@ src/main/java
    ㄴ  handler
    ㄴ  service
 
-...
+```
 
